@@ -26,3 +26,4 @@ $client = new \pxgamer\PlexPicker\Picker;
 ```php
 use \pxgamer\PlexPicker\Picker;
 $client = new Picker;
+```
