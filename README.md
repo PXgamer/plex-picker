@@ -1,6 +1,6 @@
 # plex-picker
 
-A project to pick a film from your Plex library.
+A project to pick a video from your Plex library.
 
 ## Usage
 
@@ -37,20 +37,33 @@ require 'vendor/autoload.php';
 
 use \pxgamer\PlexPicker\Picker;
 
+// Create a new Picker class
 $client = new Picker();
 
+// Create the data object
 $data = [
-    'unwatched' => 1,
+    'unwatched' => 1, // You can search by watched/unwatched videos
+    'actor' => 1, // You can search by actor ID
+    'duplicate' => 1, // You can check for duplicates
+    'year' => 2017, // You can search by year
 ];
 
+// In fact, you can use any of the filters.
+
+// Initialise the base URL of your server
 $client->_setBaseUrl('https://demo.plex.local:32400');
 
+// Set your token (will soon have a login function to get a token)
 $client->setToken('5KaVLQiL531414faD7PfZ3');
 
+// Set the data (using an array)
 $client->setData($data);
 
+// Get the list of videos from the server
 $client->_get();
 
-echo 'Chosen Film: '.$client->chooseFilm();
+// Select the video
+$client->chooseVideo();
 
+echo 'Chosen Film: '. $client->videoData['title'] . ' (' . $client->videoData['year'] . ')';
 ```

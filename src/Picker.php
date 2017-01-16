@@ -33,9 +33,9 @@ class Picker
         $this->data = array_merge($this->data, $data);
     }
 
-    public function _get()
+    public function _get($section_id = 1)
     {
-        $url = $this->baseUrl.'/library/sections/1/all?';
+        $url = $this->baseUrl.'/library/sections/'.$section_id.'/all?';
 
         $cu = curl_init();
         curl_setopt_array(
@@ -54,12 +54,16 @@ class Picker
         return $this->plexResponse;
     }
 
-    public function chooseFilm()
+    public function chooseVideo()
     {
+        if (!isset($this->plexResponse['Video'])) {
+            return 'No videos found';
+        }
+        
         $chosen = (array) $this->plexResponse['Video'][array_rand($this->plexResponse['Video'])];
 
         $this->videoData = $chosen['@attributes'];
 
-        return $this->videoData['title'];
+        return $this->videoData;
     }
 }
