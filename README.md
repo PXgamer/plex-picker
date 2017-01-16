@@ -27,3 +27,30 @@ $client = new \pxgamer\PlexPicker\Picker;
 use \pxgamer\PlexPicker\Picker;
 $client = new Picker;
 ```
+
+Then you can run the task (example below).
+
+```php
+<?php
+
+require 'vendor/autoload.php';
+
+use \pxgamer\PlexPicker\Picker;
+
+$client = new Picker();
+
+$data = [
+    'unwatched' => 1,
+];
+
+$client->_setBaseUrl('https://demo.plex.local:32400');
+
+$client->setToken('5KaVLQiL531414faD7PfZ3');
+
+$client->setData($data);
+
+$client->_get();
+
+echo 'Chosen Film: '.$client->chooseFilm();
+
+```

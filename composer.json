@@ -1,6 +1,6 @@
 {
   "name": "pxgamer/plex-picker",
-  "type": "project",
+  "type": "library",
   "description": "A project to pick a film from your Plex library.",
   "homepage": "https://github.com/PXgamer/getiplayer-php",
   "license": "MIT",
