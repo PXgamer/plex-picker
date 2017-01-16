@@ -1,0 +1,32 @@
+{
+  "name": "pxgamer/plex-picker",
+  "type": "project",
+  "description": "A project to pick a film from your Plex library.",
+  "homepage": "https://github.com/PXgamer/getiplayer-php",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "PXgamer",
+      "email": "owzie123@gmail.com",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/PXgamer/plex-picker/issues"
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/PXgamer/plex-picker"
+    }
+  ],
+  "require": {
+    "php": ">=5.5.0",
+    "ext-curl": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "pxgamer\\PlexPicker\\": "src/"
+    }
+  }
+}
