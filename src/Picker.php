@@ -42,8 +42,6 @@ class Picker
             $cu,
             [
                 CURLOPT_URL => $url.http_build_query($this->data),
-                CURLOPT_SSL_VERIFYHOST => 0,
-                CURLOPT_SSL_VERIFYPEER => 0,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_TIMEOUT => 15,
             ]
