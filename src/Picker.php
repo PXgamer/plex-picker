@@ -4,23 +4,40 @@ namespace pxgamer\PlexPicker;
 
 /**
  * Class Picker
- * Package pxgamer\PlexPicker.
  */
 class Picker
 {
+    /**
+     * @var string
+     */
     public $baseUrl;
 
+    /**
+     * @var array
+     */
     public $plexResponse;
 
+    /**
+     * @var array
+     */
     public $videoData;
 
+    /**
+     * @var array
+     */
     public $data = [];
 
-    public function _setBaseUrl($baseUrl)
+    /**
+     * @param $baseUrl
+     */
+    public function setBaseUrl($baseUrl)
     {
         $this->baseUrl = $baseUrl;
     }
 
+    /**
+     * @param $token
+     */
     public function setToken($token)
     {
         $this->data['X-Plex-Token'] = $token;
@@ -28,12 +45,19 @@ class Picker
         $this->data['type'] = '1';
     }
 
+    /**
+     * @param $data
+     */
     public function setData($data)
     {
         $this->data = array_merge($this->data, $data);
     }
 
-    public function _get($section_id = 1)
+    /**
+     * @param int $section_id
+     * @return array
+     */
+    public function get($section_id = 1)
     {
         $url = $this->baseUrl.'/library/sections/'.$section_id.'/all?';
 
@@ -52,6 +76,9 @@ class Picker
         return $this->plexResponse;
     }
 
+    /**
+     * @return mixed|string
+     */
     public function chooseVideo()
     {
         if (!isset($this->plexResponse['Video'])) {
