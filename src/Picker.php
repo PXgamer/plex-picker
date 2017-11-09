@@ -37,9 +37,9 @@ class Picker
     }
 
     /**
-     * @param $token
+     * @param string $token
      */
-    public function setToken($token)
+    public function setToken(string $token)
     {
         $this->data['X-Plex-Token'] = $token;
         $this->data['sort'] = 'titleSort:asc';
@@ -47,9 +47,9 @@ class Picker
     }
 
     /**
-     * @param $data
+     * @param array $data
      */
-    public function setData($data)
+    public function setData(array $data)
     {
         $this->data = array_merge($this->data, $data);
     }
