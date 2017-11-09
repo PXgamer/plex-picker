@@ -28,11 +28,12 @@ class Picker
     public $data = [];
 
     /**
-     * @param $baseUrl
+     * @param string $baseUrl
+     * @return string
      */
-    public function setBaseUrl($baseUrl)
+    public function setBaseUrl(string $baseUrl)
     {
-        $this->baseUrl = $baseUrl;
+        return $this->baseUrl = $baseUrl;
     }
 
     /**
