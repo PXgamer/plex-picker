@@ -78,18 +78,37 @@ class Picker
     }
 
     /**
-     * @return mixed|string
+     * @param int $numberOfVideos
+     * @return array|string
      */
-    public function chooseVideo()
+    public function chooseVideo(int $numberOfVideos = 1)
     {
         if (!isset($this->plexResponse['Video'])) {
             return 'No videos found';
         }
-        
-        $chosen = (array) $this->plexResponse['Video'][array_rand($this->plexResponse['Video'])];
 
-        $this->videoData = $chosen['@attributes'];
+        if ($numberOfVideos > 1) {
+            $iterator = 0;
+
+            while ($iterator < $numberOfVideos) {
+                $this->videoData[] = $this->selectRandom();
+                $iterator++;
+            }
+        } else {
+            $this->videoData = $this->selectRandom();
+        }
 
         return $this->videoData;
+    }
+
+    /**
+     * @return array
+     */
+    public function selectRandom()
+    {
+        $videoId = array_rand($this->plexResponse['Video']);
+        $chosen = (array)$this->plexResponse['Video'][$videoId];
+
+        return $chosen['@attributes'];
     }
 }
