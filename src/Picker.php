@@ -55,12 +55,12 @@ class Picker
     }
 
     /**
-     * @param int $section_id
+     * @param int $sectionId
      * @return array
      */
-    public function get($section_id = 1)
+    public function get($sectionId = 1)
     {
-        $url = $this->baseUrl.'/library/sections/'.$section_id.'/all?';
+        $url = $this->baseUrl.'/library/sections/'.$sectionId.'/all?';
 
         $cu = curl_init();
         curl_setopt_array(
