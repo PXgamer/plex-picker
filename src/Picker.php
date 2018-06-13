@@ -66,13 +66,13 @@ class Picker
         curl_setopt_array(
             $cu,
             [
-                CURLOPT_URL => $url.http_build_query($this->data),
+                CURLOPT_URL            => $url.http_build_query($this->data),
                 CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_TIMEOUT => 15,
+                CURLOPT_TIMEOUT        => 15,
             ]
         );
 
-        $this->plexResponse = (array) simplexml_load_string(curl_exec($cu));
+        $this->plexResponse = (array)simplexml_load_string(curl_exec($cu));
 
         return $this->plexResponse;
     }
@@ -85,8 +85,8 @@ class Picker
         if (!isset($this->plexResponse['Video'])) {
             return 'No videos found';
         }
-        
-        $chosen = (array) $this->plexResponse['Video'][array_rand($this->plexResponse['Video'])];
+
+        $chosen = (array)$this->plexResponse['Video'][array_rand($this->plexResponse['Video'])];
 
         $this->videoData = $chosen['@attributes'];
 
