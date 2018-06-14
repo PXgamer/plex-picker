@@ -45,7 +45,7 @@ $data = [
 // In fact, you can use any of the filters.
 
 // Initialise the base URL of your server
-$client->_setBaseUrl('https://demo.plex.local:32400');
+$client->setBaseUrl('https://demo.plex.local:32400');
 
 // Set your token (will soon have a login function to get a token)
 $client->setToken('5KaVLQiL531414faD7PfZ3');
@@ -54,7 +54,7 @@ $client->setToken('5KaVLQiL531414faD7PfZ3');
 $client->setData($data);
 
 // Get the list of videos from the server
-$client->_get();
+$client->get();
 
 // Select the video
 $client->chooseVideo();
