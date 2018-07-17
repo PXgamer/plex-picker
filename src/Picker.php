@@ -3,6 +3,7 @@
 namespace pxgamer\PlexPicker;
 
 use GuzzleHttp\Client;
+use pxgamer\PlexPicker\Exceptions\NoVideosFoundException;
 
 /**
  * Class Picker
@@ -93,25 +94,25 @@ class Picker
                 'query' => $this->data,
             ]);
 
-        if ($response->getStatusCode() === self::HTTP_STATUS_OK) {
-            $this->plexResponse = (array)simplexml_load_string($response->getBody()->getContents());
-        }
+        $this->plexResponse = (array)simplexml_load_string($response->getBody()->getContents()) ?? [];
 
         return $this;
     }
 
     /**
-     * @return mixed|string
+     * @return array
+     * @throws NoVideosFoundException
      */
-    public function chooseVideo()
+    public function chooseVideo(): array
     {
         if (!isset($this->plexResponse['Video'])) {
-            return 'No videos found';
+            throw new NoVideosFoundException();
         }
 
-        $chosen = (array)$this->plexResponse['Video'][array_rand($this->plexResponse['Video'])];
+        $chosenId = array_rand($this->plexResponse['Video']);
+        $selectedVideo = (array)$this->plexResponse['Video'][$chosenId];
 
-        $this->videoData = $chosen['@attributes'];
+        $this->videoData = $selectedVideo['@attributes'];
 
         return $this->videoData;
     }
