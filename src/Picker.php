@@ -40,6 +40,14 @@ class Picker
     private $guzzle;
 
     /**
+     * @return self
+     */
+    public static function make(): self
+    {
+        return new self();
+    }
+
+    /**
      * @param string $baseUrl
      */
     public function setBaseUrl(string $baseUrl)
