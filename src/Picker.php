@@ -2,94 +2,138 @@
 
 namespace pxgamer\PlexPicker;
 
+use GuzzleHttp\Client;
+use pxgamer\PlexPicker\Exceptions\NoVideosFoundException;
+
 /**
  * Class Picker
  */
 class Picker
 {
+    private const HTTP_STATUS_OK = 200;
+
     /**
-     * @var string
+     * @var string|null
      */
     public $baseUrl;
 
     /**
      * @var array
      */
-    public $plexResponse;
+    private $plexResponse = [];
+
+    /**
+     * @var array|null
+     */
+    private $videoData;
 
     /**
      * @var array
      */
-    public $videoData;
+    public $data = [
+        'sort' => 'titleSort:asc',
+        'type' => '1',
+    ];
 
     /**
-     * @var array
+     * @var Client
      */
-    public $data = [];
+    private $guzzle;
+
+    /**
+     * @return self
+     */
+    public static function make(): self
+    {
+        return new self();
+    }
 
     /**
      * @param string $baseUrl
-     * @return string
+     * @return self
      */
-    public function setBaseUrl(string $baseUrl)
+    public function setBaseUrl(string $baseUrl): self
     {
-        return $this->baseUrl = $baseUrl;
+        $this->baseUrl = $baseUrl;
+
+        return $this;
     }
 
     /**
      * @param string $token
+     * @return self
      */
-    public function setToken(string $token)
+    public function setToken(string $token): self
     {
         $this->data['X-Plex-Token'] = $token;
-        $this->data['sort'] = 'titleSort:asc';
-        $this->data['type'] = '1';
+
+        return $this;
     }
 
     /**
      * @param array $data
+     * @return self
      */
-    public function setData(array $data)
+    public function setData(array $data): self
     {
         $this->data = array_merge($this->data, $data);
+
+        return $this;
     }
 
     /**
      * @param int $sectionId
-     * @return array
+     * @return self
      */
-    public function get($sectionId = 1)
+    public function get(int $sectionId = 1): self
     {
         $url = $this->baseUrl.'/library/sections/'.$sectionId.'/all?';
 
-        $cu = curl_init();
-        curl_setopt_array(
-            $cu,
-            [
-                CURLOPT_URL            => $url.http_build_query($this->data),
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_TIMEOUT        => 15,
-            ]
-        );
+        $response = $this->getClient()
+            ->get($url, [
+                'query' => $this->data,
+            ]);
 
-        $this->plexResponse = (array)simplexml_load_string(curl_exec($cu));
+        $this->plexResponse = (array)simplexml_load_string($response->getBody()->getContents()) ?? [];
 
+        return $this;
+    }
+
+    /**
+     * @return array
+     * @throws NoVideosFoundException
+     */
+    public function chooseVideo(): array
+    {
+        if (!isset($this->plexResponse['Video'])) {
+            throw new NoVideosFoundException();
+        }
+
+        $chosenId = array_rand($this->plexResponse['Video']);
+        $selectedVideo = (array)$this->plexResponse['Video'][$chosenId];
+
+        $this->videoData = $selectedVideo['@attributes'];
+
+        return $this->videoData;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPlexResponse(): array
+    {
         return $this->plexResponse;
     }
 
     /**
-     * @return mixed|string
+     * @return Client
      */
-    public function chooseVideo()
+    private function getClient(): Client
     {
-        if (!isset($this->plexResponse['Video'])) {
-            return 'No videos found';
+        if (!$this->guzzle instanceof Client) {
+            $this->guzzle = new Client();
         }
 
-        $chosen = (array)$this->plexResponse['Video'][array_rand($this->plexResponse['Video'])];
-
-        $this->videoData = $chosen['@attributes'];
-
-        return $this->videoData;
+        return $this->guzzle;
     }
 }

@@ -12,8 +12,9 @@ class MainTest extends TestCase
     const TEST_URL = 'https://test-plex';
     const TEST_TOKEN = 'random-string-token';
     const TEST_DATA = [
-        'test',
-        'data',
+        'sort' => 'titleSort:asc',
+        'type' => '1',
+        'test' => true,
     ];
 
     /**
