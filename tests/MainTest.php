@@ -4,6 +4,9 @@ namespace pxgamer\PlexPicker;
 
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class MainTest
+ */
 class MainTest extends TestCase
 {
     const TEST_URL = 'https://test-plex';
@@ -13,7 +16,10 @@ class MainTest extends TestCase
         'data',
     ];
 
-    public function testCanSetBaseUrl()
+    /**
+     * @test
+     */
+    public function itCanSetTheBaseUrl()
     {
         $client = new Picker();
         $client->setBaseUrl(self::TEST_URL);
@@ -21,7 +27,10 @@ class MainTest extends TestCase
         $this->assertTrue($client->baseUrl === self::TEST_URL);
     }
 
-    public function testCanGetCanSetToken()
+    /**
+     * @test
+     */
+    public function itCanSetTheRequestToken()
     {
         $client = new Picker();
         $client->setToken(self::TEST_TOKEN);
@@ -29,7 +38,10 @@ class MainTest extends TestCase
         $this->assertTrue($client->data['X-Plex-Token'] === self::TEST_TOKEN);
     }
 
-    public function testCanGetCanSetData()
+    /**
+     * @test
+     */
+    public function itCanSetTheRequestData()
     {
         $client = new Picker();
         $client->setData(self::TEST_DATA);
