@@ -10,23 +10,6 @@ use pxgamer\PlexPicker\Exceptions\NoVideosFoundException;
  */
 class Picker
 {
-    private const HTTP_STATUS_OK = 200;
-
-    /**
-     * @var string|null
-     */
-    public $baseUrl;
-
-    /**
-     * @var array
-     */
-    private $plexResponse = [];
-
-    /**
-     * @var array|null
-     */
-    private $videoData;
-
     /**
      * @var array
      */
@@ -34,11 +17,26 @@ class Picker
         'sort' => 'titleSort:asc',
         'type' => '1',
     ];
-
+    /**
+     * @var string|null
+     */
+    private $baseUrl;
     /**
      * @var Client
      */
     private $guzzle;
+    /**
+     * @var array
+     */
+    private $plexResponse = [];
+    /**
+     * @var Video|null
+     */
+    private $video;
+    /**
+     * @var array
+     */
+    private $videoData = [];
 
     /**
      * @return self
@@ -100,10 +98,10 @@ class Picker
     }
 
     /**
-     * @return array
+     * @return Video
      * @throws NoVideosFoundException
      */
-    public function chooseVideo(): array
+    public function chooseVideo(): Video
     {
         if (!isset($this->plexResponse['Video'])) {
             throw new NoVideosFoundException();
@@ -114,7 +112,15 @@ class Picker
 
         $this->videoData = $selectedVideo['@attributes'];
 
-        return $this->videoData;
+        return $this->getVideo();
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getBaseUrl(): string
+    {
+        return $this->baseUrl;
     }
 
     /**
@@ -123,6 +129,14 @@ class Picker
     public function getPlexResponse(): array
     {
         return $this->plexResponse;
+    }
+
+    /**
+     * @return Video
+     */
+    public function getVideo(): Video
+    {
+        return Video::make($this->videoData);
     }
 
     /**
