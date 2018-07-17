@@ -27,24 +27,20 @@ $client = Picker::make();
 
 // Methods can either be chained or called separately
 
-// Create the data object
-$data = [
-    'unwatched' => 1, // You can search by watched/unwatched videos
-    'actor' => 1, // You can search by actor ID
-    'duplicate' => 1, // You can check for duplicates
-    'year' => 2017, // You can search by year
-];
-
-// In fact, you can use any of the filters.
-
 // Initialise the base URL of your server
 $client->setBaseUrl('https://demo.plex.local:32400');
 
-// Set your token (will soon have a login function to get a token)
+// Set your token
 $client->setToken('5KaVLQiL531414faD7PfZ3');
 
 // Set the data (using an array)
-$client->setData($data);
+// You can use any of the filters from Plex
+$client->setData([
+    'unwatched' => 1, // Search by watched/unwatched videos
+    'actor' => 1,     // Search by actor ID
+    'duplicate' => 1, // Search for duplicates
+    'year' => 2017,   // Search by year
+]);
 
 // Get the list of videos from the server
 $client->get();
@@ -52,7 +48,7 @@ $client->get();
 // Select the video
 $client->chooseVideo();
 
-echo 'Chosen Film: '. $client->videoData['title'] . ' (' . $client->videoData['year'] . ')';
+echo 'Chosen Film: '.$client->getVideo()->getTitle().'('.$client->getVideo()->getYear().')';
 ```
 
 ## Change log

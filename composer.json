@@ -6,6 +6,7 @@
     "require": {
         "php": "^7.1",
         "ext-SimpleXML": "*",
+        "carbondate/carbon": "^1.27",
         "guzzlehttp/guzzle": "^6.3"
     },
     "require-dev": {
