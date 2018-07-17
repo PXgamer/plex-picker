@@ -24,7 +24,7 @@ class MainTest extends TestCase
     {
         $client = Picker::make()->setBaseUrl(self::TEST_URL);
 
-        $this->assertTrue($client->baseUrl === self::TEST_URL);
+        $this->assertTrue($client->getBaseUrl() === self::TEST_URL);
     }
 
     /**
