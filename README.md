@@ -20,11 +20,12 @@ $ composer require pxgamer/plex-picker
 ## Usage
 
 ```php
-
-use \pxgamer\PlexPicker\Picker;
+use pxgamer\PlexPicker\Picker;
 
 // Create a new Picker class
-$client = new Picker();
+$client = Picker::make();
+
+// Methods can either be chained or called separately
 
 // Create the data object
 $data = [
