@@ -30,10 +30,6 @@ class Picker
      */
     private $plexResponse = [];
     /**
-     * @var Video|null
-     */
-    private $video;
-    /**
      * @var array
      */
     private $videoData = [];
