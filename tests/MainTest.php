@@ -22,8 +22,7 @@ class MainTest extends TestCase
      */
     public function itCanSetTheBaseUrl()
     {
-        $client = new Picker();
-        $client->setBaseUrl(self::TEST_URL);
+        $client = Picker::make()->setBaseUrl(self::TEST_URL);
 
         $this->assertTrue($client->baseUrl === self::TEST_URL);
     }
@@ -33,8 +32,7 @@ class MainTest extends TestCase
      */
     public function itCanSetTheRequestToken()
     {
-        $client = new Picker();
-        $client->setToken(self::TEST_TOKEN);
+        $client = Picker::make()->setToken(self::TEST_TOKEN);
 
         $this->assertTrue($client->data['X-Plex-Token'] === self::TEST_TOKEN);
     }
@@ -44,8 +42,7 @@ class MainTest extends TestCase
      */
     public function itCanSetTheRequestData()
     {
-        $client = new Picker();
-        $client->setData(self::TEST_DATA);
+        $client = Picker::make()->setData(self::TEST_DATA);
 
         $this->assertTrue($client->data === self::TEST_DATA);
     }
