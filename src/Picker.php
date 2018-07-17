@@ -2,11 +2,15 @@
 
 namespace pxgamer\PlexPicker;
 
+use GuzzleHttp\Client;
+
 /**
  * Class Picker
  */
 class Picker
 {
+    private const HTTP_STATUS_OK = 200;
+
     /**
      * @var string
      */
@@ -25,15 +29,22 @@ class Picker
     /**
      * @var array
      */
-    public $data = [];
+    public $data = [
+        'sort' => 'titleSort:asc',
+        'type' => '1',
+    ];
+
+    /**
+     * @var Client
+     */
+    private $guzzle;
 
     /**
      * @param string $baseUrl
-     * @return string
      */
     public function setBaseUrl(string $baseUrl)
     {
-        return $this->baseUrl = $baseUrl;
+        $this->baseUrl = $baseUrl;
     }
 
     /**
@@ -42,8 +53,6 @@ class Picker
     public function setToken(string $token)
     {
         $this->data['X-Plex-Token'] = $token;
-        $this->data['sort'] = 'titleSort:asc';
-        $this->data['type'] = '1';
     }
 
     /**
@@ -58,21 +67,16 @@ class Picker
      * @param int $sectionId
      * @return array
      */
-    public function get($sectionId = 1)
+    public function get(int $sectionId = 1)
     {
         $url = $this->baseUrl.'/library/sections/'.$sectionId.'/all?';
 
-        $cu = curl_init();
-        curl_setopt_array(
-            $cu,
-            [
-                CURLOPT_URL            => $url.http_build_query($this->data),
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_TIMEOUT        => 15,
-            ]
-        );
+        $response = $this->getClient()
+            ->get($url, $this->data);
 
-        $this->plexResponse = (array)simplexml_load_string(curl_exec($cu));
+        if ($response->getStatusCode() === self::HTTP_STATUS_OK) {
+            $this->plexResponse = simplexml_load_string($response->getBody()->getContents());
+        }
 
         return $this->plexResponse;
     }
@@ -91,5 +95,17 @@ class Picker
         $this->videoData = $chosen['@attributes'];
 
         return $this->videoData;
+    }
+
+    /**
+     * @return Client
+     */
+    private function getClient()
+    {
+        if (!$this->guzzle instanceof Client) {
+            $this->guzzle = new Client();
+        }
+
+        return $this->guzzle;
     }
 }
