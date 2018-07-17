@@ -12,19 +12,19 @@ class Picker
     private const HTTP_STATUS_OK = 200;
 
     /**
-     * @var string
+     * @var string|null
      */
     public $baseUrl;
 
     /**
      * @var array
      */
-    public $plexResponse;
+    private $plexResponse = [];
 
     /**
-     * @var array
+     * @var array|null
      */
-    public $videoData;
+    private $videoData;
 
     /**
      * @var array
@@ -49,44 +49,55 @@ class Picker
 
     /**
      * @param string $baseUrl
+     * @return self
      */
-    public function setBaseUrl(string $baseUrl)
+    public function setBaseUrl(string $baseUrl): self
     {
         $this->baseUrl = $baseUrl;
+
+        return $this;
     }
 
     /**
      * @param string $token
+     * @return self
      */
-    public function setToken(string $token)
+    public function setToken(string $token): self
     {
         $this->data['X-Plex-Token'] = $token;
+
+        return $this;
     }
 
     /**
      * @param array $data
+     * @return self
      */
-    public function setData(array $data)
+    public function setData(array $data): self
     {
         $this->data = array_merge($this->data, $data);
+
+        return $this;
     }
 
     /**
      * @param int $sectionId
-     * @return array
+     * @return self
      */
-    public function get(int $sectionId = 1)
+    public function get(int $sectionId = 1): self
     {
         $url = $this->baseUrl.'/library/sections/'.$sectionId.'/all?';
 
         $response = $this->getClient()
-            ->get($url, $this->data);
+            ->get($url, [
+                'query' => $this->data,
+            ]);
 
         if ($response->getStatusCode() === self::HTTP_STATUS_OK) {
-            $this->plexResponse = simplexml_load_string($response->getBody()->getContents());
+            $this->plexResponse = (array)simplexml_load_string($response->getBody()->getContents());
         }
 
-        return $this->plexResponse;
+        return $this;
     }
 
     /**
@@ -106,9 +117,17 @@ class Picker
     }
 
     /**
+     * @return array
+     */
+    public function getPlexResponse(): array
+    {
+        return $this->plexResponse;
+    }
+
+    /**
      * @return Client
      */
-    private function getClient()
+    private function getClient(): Client
     {
         if (!$this->guzzle instanceof Client) {
             $this->guzzle = new Client();
