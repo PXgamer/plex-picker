@@ -48,7 +48,7 @@ $client->get();
 // Select the video
 $client->chooseVideo();
 
-echo 'Chosen Film: '. $client->getVideo()->getTitle() . ' (' . $client->getVideo()->getYear() . ')';
+echo 'Chosen Film: '.$client->getVideo()->getTitle().'('.$client->getVideo()->getYear().')';
 ```
 
 ## Change log
